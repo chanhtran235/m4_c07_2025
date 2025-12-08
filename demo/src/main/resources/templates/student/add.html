@@ -9,9 +9,10 @@
 <body>
 <th:block th:insert="~{layout/layout::myMavbar}"/>
 <h1>Thêm mới</h1>
-<form action="/students/add" method="post" th:object="${student}">
+<form action="/students/add" method="post" th:object="${studentDto}">
 <!--    Id: <input th:field="*{id}"><br>-->
     Name: <input  th:field="*{name}"><br>
+    <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small><br>
     Gender <input  type="radio" th:field="*{gender}" value="1">Male
     <input type="radio" th:field="*{gender}" value="0">Female
     <button>Save</button>

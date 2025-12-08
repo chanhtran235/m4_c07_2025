@@ -6,6 +6,8 @@ import com.example.demo.entity.Student;
 import com.example.demo.repository.IClassRepository;
 import com.example.demo.repository.IStudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +18,15 @@ public class StudentService implements IStudentService{
     private IStudentRepository studentRepository;
     @Autowired
     private IClassRepository classRepository;
+
     @Override
     public List<Student> findAll() {
-        String searchName = "t";
-        ClassCG classCG = classRepository.findById(1).orElse(null);
-        return studentRepository.searchName("%"+searchName+"%");
+        return List.of();
+    }
+
+    @Override
+    public Page<Student> findAll(String name, Pageable pageable) {
+        return studentRepository.findByNameContaining(name,pageable);
     }
 
     @Override
