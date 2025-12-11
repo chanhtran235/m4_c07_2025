@@ -15,7 +15,7 @@ public class StudentValidate implements Validator {
         StudentDto studentDto = (StudentDto) target;
         if ("".equals(studentDto.getName())){
             errors.rejectValue("name","notEmpty","Ten khong dc trong");
-        }else if (!studentDto.getName().matches("^[A-Z][a-z]*(\\s[A-Z][a-z]*)+$")){
+        }else if (!studentDto.getName().matches("^[A-Z][a-z]*(\\s[A-Z][a-z]*)*$")){
             errors.rejectValue("name",null,"Ten sai định dạng");
 
         }

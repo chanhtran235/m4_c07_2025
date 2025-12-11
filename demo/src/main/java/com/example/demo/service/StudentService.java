@@ -3,6 +3,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.ClassCG;
 import com.example.demo.entity.Student;
+import com.example.demo.exception.DuplicateAdminNameException;
 import com.example.demo.repository.IClassRepository;
 import com.example.demo.repository.IStudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class StudentService implements IStudentService{
 
     @Override
     public List<Student> findAll() {
-        return List.of();
+        return studentRepository.findAll();
     }
 
     @Override
@@ -35,7 +36,10 @@ public class StudentService implements IStudentService{
     }
 
     @Override
-    public boolean add(Student student) {
+    public boolean save(Student student) throws DuplicateAdminNameException {
+        if (student.getName().equals("Admin")){
+            throw new DuplicateAdminNameException("Tên trùng với tên Admin");
+        }
         return studentRepository.save(student)!=null;
     }
 

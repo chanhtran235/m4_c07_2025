@@ -1,10 +1,9 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.dto.ClassDTResponse;
 import com.example.demo.dto.StudentDto;
 import com.example.demo.entity.Student;
-import com.example.demo.repository.IClassRepository;
+import com.example.demo.exception.DuplicateAdminNameException;
 import com.example.demo.service.IStudentService;
 import com.example.demo.validate.StudentValidate;
 import jakarta.validation.Valid;
@@ -14,18 +13,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.format.Formatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/students")
@@ -33,16 +25,6 @@ public class StudentController {
 
     @Autowired
     private IStudentService studentService;
-
-//    @GetMapping(value = "")
-//    public String showList(@PageableDefault(size = 2, sort = "name", direction = Sort.Direction.ASC) Pageable pageable,
-//                           @RequestParam(name = "searchName", required = false, defaultValue = "") String searchName,
-//                           Model model) {
-//        Page<Student> studentPage = studentService.findAll(searchName, pageable);
-//        model.addAttribute("studentPage", studentPage);
-//        model.addAttribute("searchName", searchName);
-//        return "student/list";
-//    }
 
     @GetMapping(value = "")
     public String showList(
@@ -69,7 +51,7 @@ public class StudentController {
     @PostMapping(value = "/add")
     public String save(@Valid @ModelAttribute StudentDto studentDto, BindingResult bindingResult,
                        RedirectAttributes redirectAttributes
-    ) {
+    ) throws DuplicateAdminNameException {
 
         new StudentValidate().validate(studentDto,bindingResult);
 
@@ -78,7 +60,7 @@ public class StudentController {
         }
         Student student = new Student();
         BeanUtils.copyProperties(studentDto,student);
-        studentService.add(student);
+        studentService.save(student);
         redirectAttributes.addFlashAttribute("mess", "Them moi thanh cong");
         return "redirect:/students";
     }
@@ -95,6 +77,11 @@ public class StudentController {
                              Model model) {
         model.addAttribute("student", studentService.findById(id));
         return "student/detail";
+    }
+
+    @ExceptionHandler(DuplicateAdminNameException.class)
+    public String handleAdminException(){
+        return "client-error";
     }
 
 }

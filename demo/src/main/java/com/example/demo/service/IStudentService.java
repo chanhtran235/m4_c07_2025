@@ -4,6 +4,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Student;
 
+import com.example.demo.exception.DuplicateAdminNameException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,7 +14,7 @@ public interface IStudentService {
     List<Student> findAll();
     Page<Student> findAll(String name, Pageable pageable);
     Student findById(int id);
-    boolean add(Student student);
+    boolean save(Student student) throws DuplicateAdminNameException;
     boolean deleteById(int id);
 
 }

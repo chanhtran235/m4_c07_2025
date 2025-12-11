@@ -18,6 +18,5 @@ public class ClassCG {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    @OneToMany(mappedBy = "classCG")
-    List<Student> studentList;
+
 }

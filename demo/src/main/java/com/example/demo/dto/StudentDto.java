@@ -20,4 +20,5 @@ public class StudentDto {
 //    @Pattern(regexp = "^[A-Z][a-z]*(\\s[A-Z][a-z]*)+$", message = "Name not match!")
     private String name;
     private boolean gender;
+    private ClassCG classCG;
 }
